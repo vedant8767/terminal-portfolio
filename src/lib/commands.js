@@ -18,6 +18,9 @@ cd
 cat
 clear
 theme
+time
+whoami
+pwd
 `;
   }
 
@@ -67,6 +70,18 @@ theme
     if (args[1] === "contact.txt") {
       return "Email: vedant@email.com";
     }
+  }
+
+  if (command === "time") {
+    return new Date().toLocaleString();
+  }
+
+  if (command === "whoami") {
+    return "vedant";
+  }
+
+  if (command === "pwd") {
+    return cwd;
   }
 
   return `command not found: ${cmd}`;
