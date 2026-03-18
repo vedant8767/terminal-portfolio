@@ -59,9 +59,9 @@ export default function SystemInfo() {
 
   return (
     <div className="flex gap-4 text-sm md:text-base">
-      <span>🕒 {time}</span>
-      <span>📅 {date}</span>
-      <span>📍 {city}</span>
+      <span>{time}</span>
+      <span>{date}</span>
+      <span>{city}</span>
     </div>
   )
 }

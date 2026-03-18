@@ -5,6 +5,9 @@ import BootScreen from "../components/BootScreen";
 import Shutdown from "../components/Shutdown";
 import Terminal from "../components/Terminal";
 import SystemInfo from "@/components/SystemInfo";
+import { MdFullscreen } from "react-icons/md";
+import { MdFullscreenExit } from "react-icons/md";
+import { IoMdPower } from "react-icons/io";
 
 export default function Home() {
   const [power, setPower] = useState(false);
@@ -42,30 +45,23 @@ export default function Home() {
 
   return (
     <div className="h-screen flex flex-col bg-black">
-      <div className="p-2 border-b border-green-700 flex justify-between">
-        <div className="text-green-400 font-mono">Terminal Portfolio</div>
+      <div className="p-2 border-b border-gray-300 flex justify-between items-center">
         <SystemInfo />
-        <button
-          onClick={togglePower}
-          className="bg-green-600 px-3 py-1 rounded text-black"
-        >
-          {power ? "OFF" : "ON"}
-        </button>
         <div className="flex gap-2">
           {/* Fullscreen Button */}
           <button
             onClick={toggleFullscreen}
-            className="bg-yellow-500 px-3 py-1 rounded text-black"
+            className="cursor-pointer"
           >
-            {isFullscreen ? "Exit Full" : "Full"}
+            {isFullscreen ? <MdFullscreenExit size={30}/>: <MdFullscreen size={30}/>}
           </button>
 
           {/* Power Button */}
           <button
             onClick={togglePower}
-            className="bg-green-600 px-3 py-1 rounded text-black"
+            className="cursor-pointer"
           >
-            {power ? "OFF" : "ON"}
+            {power ? <IoMdPower size={24}/> : <IoMdPower size={24}/>}
           </button>
         </div>
       </div>

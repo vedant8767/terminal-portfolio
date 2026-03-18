@@ -2,6 +2,8 @@
 
 import { useState, useRef, useEffect } from "react";
 import { runCommand } from "../lib/commands";
+import QRCode from "qrcode"
+import SystemStats from "./SystemStats";
 
 export default function Terminal() {
   const [history, setHistory] = useState([]);
@@ -81,14 +83,30 @@ export default function Terminal() {
     }
   }
 
+  function QRCodeBlock({ value }) {
+    const [src, setSrc] = useState("")
+
+    useEffect(() => {
+      QRCode.toDataURL(value).then(setSrc)
+    }, [value])
+
+    return (
+      <div className="my-2">
+        <img src={src} alt="qr" className="w-32 h-32" />
+        <div className="text-xs mt-1">{value}</div>
+      </div>
+    )
+  }
+
   return (
     <div
-      className="text-green-400 font-mono p-4 h-full overflow-y-auto"
+      className="text-gray-300 font-mono p-4 h-full overflow-y-auto"
       onClick={() => inputRef.current?.focus()} // click anywhere to focus
     >
       <div>
-        <pre className="text-green-400">
-        {`
+        <div className="flex flex-col justify-start items-start">
+          <pre className="text-gray-300">
+            {`
 ██╗   ██╗███████╗██████╗  █████╗ ███╗   ██╗████████╗
 ██║   ██║██╔════╝██╔══██╗██╔══██╗████╗  ██║╚══██╔══╝
 ██║   ██║█████╗  ██║  ██║███████║██╔██╗ ██║   ██║   
@@ -97,13 +115,29 @@ export default function Terminal() {
   ╚═══╝  ╚══════╝╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═══╝   ╚═╝   
                                                     
 `}
-      </pre>
-      </div>
-      {history.map((line, i) => (
-        <div key={i} className="whitespace-pre-wrap">
-          {line}
+          </pre>
+          <p className="mb-4  font-bold">Welcome to Vedant's Terminal Portfolio</p>
         </div>
-      ))}
+      </div>
+      {history.map((line, i) => {
+
+        // QR output
+        if (typeof line === "object" && line.type === "qr") {
+          return (
+            <QRCodeBlock key={i} value={line.value} />
+          )
+        }
+
+        if (typeof line === "object" && line.type === "sysinfo") {
+          return <SystemStats key={i} />
+        }
+
+        return (
+          <div key={i} className="whitespace-pre-wrap">
+            {line}
+          </div>
+        )
+      })}
 
       <div className="flex">
         <span>vedant@portfolio:{cwd}$</span>

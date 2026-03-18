@@ -31,13 +31,13 @@ export default function BootScreen({ onFinish }) {
   }, []);
 
   return (
-    <div className="text-green-400 font-mono p-4">
+    <div className="text-gray-300 font-mono p-4">
       {lines.map((l, i) => (
         <div key={i}>{l}</div>
       ))}
 
-      <div className="mt-4 w-full bg-gray-800 h-2">
-        <div className="bg-green-500 h-2 animate-pulse w-full" />
+      <div className="mt-4 w-full h-2">
+        <div className="bg-gray-400 h-2 animate-pulse w-full" />
       </div>
     </div>
   );

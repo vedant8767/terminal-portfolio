@@ -28,7 +28,7 @@ export default function Shutdown({ onFinish }) {
   }, []);
 
   return (
-    <div className="text-red-400 font-mono p-4">
+    <div className="text-gray-300 p-4">
       {lines.map((l, i) => (
         <div key={i}>{l}</div>
       ))}

@@ -84,5 +84,33 @@ pwd
     return cwd;
   }
 
+  // instead of only string → return object sometimes
+  if (command === "qr") {
+    const url = args[1];
+
+    if (!url) return "Usage: qr <url>";
+
+    return {
+      type: "qr",
+      value: url,
+    };
+  }
+
+  if (command === "coin") {
+    const result = Math.random() < 0.5 ? "Heads" : "Tails";
+
+    return `
+Flipping coin...
+
+🪙 Result: ${result}
+`;
+  }
+
+  if (command === "sysinfo") {
+    return {
+      type: "sysinfo",
+    };
+  }
+
   return `command not found: ${cmd}`;
 }
