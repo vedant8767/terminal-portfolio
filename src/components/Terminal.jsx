@@ -5,7 +5,14 @@ import { runCommand } from "../lib/commands";
 import QRCode from "qrcode"
 import SystemStats from "./SystemStats";
 
-export default function Terminal() {
+const COMMANDS = [
+  "help","about","projects","skills","contact",
+  "ls","cd","cat","clear","theme",
+  "time","whoami","pwd",
+  "age","calendar","coin","qr","sysinfo","random"
+]
+
+export default function Terminal({ onPowerOff }) {
   const [history, setHistory] = useState([]);
   const [input, setInput] = useState("");
   const [cwd, setCwd] = useState("~");
@@ -36,6 +43,12 @@ export default function Terminal() {
     }
 
     const output = runCommand(input, { cwd, setCwd });
+
+    // 🔴 Handle power off
+    if (typeof output === "object" && output.type === "poweroff") {
+      onPowerOff()
+      return
+    }
 
     setHistory((prev) => [
       ...prev,
@@ -81,6 +94,23 @@ export default function Terminal() {
       setHistoryIndex(newIndex);
       setInput(newIndex === null ? "" : commandHistory[newIndex]);
     }
+
+    if (e.key === "Tab") {
+  e.preventDefault()
+
+  const matches = COMMANDS.filter(cmd =>
+    cmd.startsWith(input.toLowerCase())
+  )
+
+  if (matches.length === 1) {
+    setInput(matches[0])
+  } else if (matches.length > 1) {
+    setHistory(prev => [
+      ...prev,
+      `Suggestions: ${matches.join("  ")}`
+    ])
+  }
+}
   }
 
   function QRCodeBlock({ value }) {
@@ -100,12 +130,12 @@ export default function Terminal() {
 
   return (
     <div
-      className="text-gray-300 font-mono p-4 h-full overflow-y-auto"
+      className="text-gray-300 font-mono p-4 h-full overflow-y-auto overflow-x-hidden"
       onClick={() => inputRef.current?.focus()} // click anywhere to focus
     >
       <div>
         <div className="flex flex-col justify-start items-start">
-          <pre className="text-gray-300">
+          <pre className="text-gray-300 text-[10px] lg:text-sm">
             {`
 ██╗   ██╗███████╗██████╗  █████╗ ███╗   ██╗████████╗
 ██║   ██║██╔════╝██╔══██╗██╔══██╗████╗  ██║╚══██╔══╝
@@ -118,6 +148,9 @@ export default function Terminal() {
           </pre>
           <p className="mb-4  font-bold">Welcome to Vedant's Terminal Portfolio</p>
         </div>
+        <p className="mb-5">
+          Type <span className="text-gray-400">'help'</span> to view commands
+        </p>
       </div>
       {history.map((line, i) => {
 
@@ -139,17 +172,19 @@ export default function Terminal() {
         )
       })}
 
-      <div className="flex">
-        <span>vedant@portfolio:{cwd}$</span>
+      <div className="flex flex-col w-full">
+        <div className="flex">
+          <span className="text-gray-400 font-semibold">vedant@portfolio:{cwd}$</span>
 
-        <input
-          ref={inputRef}
-          autoFocus
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={handleKeyDown} // ✅ FIXED HERE
-          className="bg-transparent outline-none flex-1 ml-2"
-        />
+          <input
+            ref={inputRef}
+            autoFocus
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+            className="bg-transparent outline-none flex-1 ml-2 text-white"
+          />
+        </div>
       </div>
 
       <div ref={endRef} />

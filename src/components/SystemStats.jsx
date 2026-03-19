@@ -36,7 +36,7 @@ export default function SystemStats() {
   const connection = navigator.connection || {}
 
   return (
-    <pre className="text-green-400 text-xs md:text-sm leading-tight my-2 whitespace-pre-wrap">
+    <pre className="text-gray-300 text-xs md:text-sm leading-tight my-2 whitespace-pre-wrap">
 {`SYSTEM INFORMATION
 ------------------
 Browser        : ${navigator.userAgent.match(/Chrome\/(\d+)/)?.[0] || "Unknown"}
@@ -52,11 +52,11 @@ Uptime         : ${formatUptime(uptime)}
 
 IP INFORMATION
 --------------
-IP Address     : ${info?.ip || "Loading..."}
-City           : ${info?.city || "Loading..."}
-Region         : ${info?.region || "Loading..."}
-Country        : ${info?.country_name || "Loading..."}
-Postal Code    : ${info?.postal || "Loading..."}
+IP Address     : ${info?.ip || "[■■■■■■□□□□] Loading modules..."}
+City           : ${info?.city || "[■■■■■■□□□□] Loading modules..."}
+Region         : ${info?.region || "[■■■■■■□□□□] Loading modules..."}
+Country        : ${info?.country_name || "[■■■■■■□□□□] Loading modules..."}
+Postal Code    : ${info?.postal || "[■■■■■■□□□□] Loading modules..."}
 Latitude/Long. : ${info?.latitude || "-"}, ${info?.longitude || "-"}
 Currency       : ${info?.currency || "N/A"}
 Time Zone (IP) : ${info?.timezone || "N/A"}
